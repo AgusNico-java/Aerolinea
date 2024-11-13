@@ -18,7 +18,7 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public String toString() {
-        //TODO: mODIFICAR LA IMPLEMENTACIÓN CON UN S
+        //TODO: MODIFICAR LA IMPLEMENTACIÓN CON UN StringBuilder
         return "BondiJet{" +
                 "name='" + name + '\'' +
                 ", vuelos=" + vuelos +
