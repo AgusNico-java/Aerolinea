@@ -9,14 +9,14 @@ public class Aerolinea implements IAerolinea {
     private String name;
     private Map<String, Vuelo> vuelos;
     private ArrayList<Cliente> clientes;
-    private ArrayList<Aeropuerto> aeropuertos;
+    private Map<String, Aeropuerto> aeropuertos;
     private String cuit;
 
     public Aerolinea(String name, String cuit) {
         this.name = name;
         this.cuit = cuit;
         this.clientes = new ArrayList<>();
-        this.aeropuertos = new ArrayList<>();
+        this.aeropuertos = new HashMap<>();
         this.vuelos = new HashMap<>();
     }
 
@@ -47,12 +47,10 @@ public class Aerolinea implements IAerolinea {
 
 	@Override
 	public void registrarAeropuerto(String nombre, String pais, String provincia, String direccion) {
-		for (Aeropuerto aeropuerto : aeropuertos) {
-			if (aeropuerto.getNombre().equals(nombre)) {
-				throw new RuntimeException("El aeropuerto " + nombre + " ya está registrado.");
-			}
-		}
-		aeropuertos.add(new Aeropuerto(nombre, pais, provincia, direccion));
+        if (aeropuertos.containsKey(nombre)) {
+            throw new RuntimeException("El aeropuerto " + nombre + " ya está registrado.");
+        }
+        aeropuertos.put(nombre, new Aeropuerto(nombre, pais, provincia, direccion));
 	}
 
 	/*
