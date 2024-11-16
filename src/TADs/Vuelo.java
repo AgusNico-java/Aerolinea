@@ -47,4 +47,44 @@ public abstract class Vuelo {
                 ", registroPasajeros=" + Arrays.toString(registroPasajeros) +
                 '}';
     }
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public int getCantidadAsientos() {
+		return cantidadAsientos;
+	}
+
+	public int getTotalTripulantes() {
+		return totalTripulantes;
+	}
+
+	public int getAsientosDisponibles() {
+		return asientosDisponibles;
+	}
+
+	public double getValorPasaje() {
+		return valorPasaje;
+	}
+
+	public Aeropuerto getAeropuertoSalida() {
+		return aeropuertoSalida;
+	}
+
+	public Aeropuerto getAeropuertoLlegada() {
+		return aeropuertoLlegada;
+	}
+
+	public LocalDateTime getHoraSalida() {
+		return horaSalida;
+	}
+
+	public LocalDateTime getHoraLlegada() {
+		return horaLlegada;
+	}
+
+	public Cliente[] getRegistroPasajeros() {
+		return registroPasajeros;
+	}
 }

@@ -19,4 +19,16 @@ public class Cliente {
                 ", nombre='" + nombre + '\'' +
                 '}';
     }
+
+	public int getDni() {
+		return dni;
+	}
+	
+	public String getTelefono() {
+		return telefono;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
 }
