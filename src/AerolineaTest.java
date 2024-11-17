@@ -109,7 +109,7 @@ public class AerolineaTest {
         aerolinea.registrarCliente(12345679, "Porthos", "011-2345-6779");
         aerolinea.registrarCliente(12345680, "Aramis", "011-2345-6769");
 
-		String codVuelo = aerolinea.VenderVueloPrivado("Ezeiza", "Ushuaia", "10/12/2024", 5, 500000.0,
+		String codVuelo = aerolinea.VenderVueloPrivado("Ezeiza", "Ushuaia", "10/12/2025", 5, 500000.0,
 				12345678, acompaniantes);
 		assertNotNull(codVuelo);
 		assertTrue(codVuelo.endsWith("-PRI"));
