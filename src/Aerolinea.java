@@ -117,7 +117,8 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public Map<Integer, String> asientosDisponibles(String codVuelo) {
-        return Map.of();
+        VueloPublico vuelo = (VueloPublico) vuelos.get(codVuelo);
+        return vuelo.getAsientosDisponibles();
     }
 
     @Override
