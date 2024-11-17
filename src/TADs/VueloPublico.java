@@ -1,30 +1,30 @@
 package TADs;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class VueloPublico extends Vuelo {
     int cantidadPasajeros;
-    String refrigerio;
+    double valorRefrigerio;
     HashMap<Cliente, Integer> pasajeros;
-    ArrayList<Seccion> secciones;
+    int[] cantidadAsientos;
 
-    public VueloPublico(String destino, int cantidadAsientos, int totalTripulantes, int asientosDisponibles, double valorPasaje, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, LocalDateTime horaSalida, LocalDateTime horaLlegada, Cliente[] registroPasajeros, int cantidadPasajeros, String refrigerio, HashMap<Cliente, Integer> pasajeros, ArrayList<Seccion> secciones) {
-        super(destino, cantidadAsientos, totalTripulantes, asientosDisponibles, valorPasaje, aeropuertoSalida, aeropuertoLlegada, horaSalida, horaLlegada, registroPasajeros);
-        this.cantidadPasajeros = cantidadPasajeros;
-        this.refrigerio = refrigerio;
-        this.pasajeros = pasajeros;
-        this.secciones = secciones;
+    public VueloPublico(String destino, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada,
+                        String fecha, int tripulantes, double valorRefrigerio, double[] precios,
+                        int[] cantidadAsientos){
+        super(destino, tripulantes, precios, aeropuertoSalida, aeropuertoLlegada, fecha);
+        this.cantidadAsientos = cantidadAsientos;
+        this.valorRefrigerio = valorRefrigerio;
+
     }
 
     @Override
     public String toString() {
         return "VueloPublico{" +
                 "cantidadPasajeros=" + cantidadPasajeros +
-                ", refrigerio='" + refrigerio + '\'' +
+                ", valorRefrigerio=" + valorRefrigerio +
                 ", pasajeros=" + pasajeros +
-                ", secciones=" + secciones +
+                ", cantidadAsientos=" + Arrays.toString(cantidadAsientos) +
                 '}';
     }
 }

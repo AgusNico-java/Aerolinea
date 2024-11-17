@@ -21,18 +21,6 @@ public class Aerolinea implements IAerolinea {
     }
 
     @Override
-    public String toString() {
-        //TODO: MODIFICAR LA IMPLEMENTACIÓN CON UN StringBuilder
-        return "BondiJet{" +
-                "name='" + name + '\'' +
-                ", vuelos=" + vuelos +
-                ", clientes=" + clientes +
-                ", aeropuertos=" + aeropuertos +
-                ", cuit='" + cuit + '\'' +
-                '}';
-    }
-
-	@Override
 	public void registrarCliente(int dni, String nombre, String telefono) {
 		// Verificar si ya existe un cliente con el mismo DNI
 		for (Cliente cliente : clientes) {
@@ -53,23 +41,43 @@ public class Aerolinea implements IAerolinea {
         aeropuertos.put(nombre, new Aeropuerto(nombre, pais, provincia, direccion));
 	}
 
-	/*
+
 	@Override
 	public String registrarVueloPublicoNacional(String origen, String destino, String fecha, int tripulantes,
-			double valorRefrigerio, double[] precios, int[] cantAsientos) {
-		return "";
-		Vuelo nuevoVuelo = new VueloNacional(origen, destino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos); // ver esto despues
-		String codVuelo = origen + "-" + destino + "-" + fecha;
+                                                double valorRefrigerio, double[] precios, int[] cantAsientos) {
+        Aeropuerto aeropuertoSalida = aeropuertos.get(origen);
+        Aeropuerto aeropuertoDestino = aeropuertos.get(destino);
+        Vuelo vuelo = new VueloNacional(aeropuertoSalida, aeropuertoDestino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos); // ver esto despues
+        String codVuelo = crearCodigoPublico();
 
-		vuelos.put(codVuelo, nuevoVuelo);
+        if (!aeropuertos.containsKey(destino)) {
+            throw new RuntimeException("El destino " + destino + " no está registrado.");
+        }
 
-		return "Vuelo código " + codVuelo + " registrado correctamente.";
+        if (!vuelo.paisSalidaIgualPaisDestino()) {
+            throw new RuntimeException("Los datos ingresados corresponden a un vuelo internacional");
+        }
+		vuelos.put(codVuelo, vuelo);
+
+		return codVuelo;
 	}
-	*/
 
     @Override
     public String registrarVueloPublicoInternacional(String origen, String destino, String fecha, int tripulantes, double valorRefrigerio, int cantRefrigerios, double[] precios, int[] cantAsientos, String[] escalas) {
-        return "";
+        Vuelo vuelo = new VueloInternacional(aeropuertos.get(origen), aeropuertos.get(destino), fecha, tripulantes, valorRefrigerio, cantRefrigerios, precios, cantAsientos, escalas);
+        String codVuelo = crearCodigoPublico();
+
+        if (!aeropuertos.containsKey(destino)) {
+            throw new RuntimeException("El destino " + destino + " no está registrado.");
+
+        }
+        if (vuelo.paisSalidaIgualPaisDestino()) {
+            throw new RuntimeException("Los datos ingresados corresponden a un vuelo nacional.");
+        }
+
+        vuelos.put(codVuelo, vuelo);
+
+        return codVuelo;
     }
 
     @Override
@@ -114,7 +122,7 @@ public class Aerolinea implements IAerolinea {
 
 		for (Vuelo vuelo : vuelos.values()) {
 			if (vuelo.getDestino().equals(destino)) {
-				totalRecaudado += vuelo.getValorPasaje();
+				//totalRecaudado += vuelo.getPrecios();
 			}
 		}
 		return totalRecaudado;
@@ -132,10 +140,33 @@ public class Aerolinea implements IAerolinea {
 		}
 	}
 
-	@Override
-	public String registrarVueloPublicoNacional(String origen, String destino, String fecha, int tripulantes,
-			double valorRefrigerio, double[] precios, int[] cantAsientos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String toString() {
+        //TODO: IMPLEMENTAR
+        return "";
+    }
+
+    /*
+    contamos los vuelos públicos registrados y le agregamos el sufijo "-PUB" para generar el código
+     */
+    private String crearCodigoPublico() {
+        int cantidadDeVuelosPublicos = (int) vuelos.keySet().stream().filter(s -> {
+            return s.endsWith("key");
+        }).count();
+
+        return cantidadDeVuelosPublicos + "-PUB";
+    }
+
+    /*
+    contamos los vuelos públicos registrados y le agregamos el sufijo "-priv" para generar el código
+     */
+    private String crearCodigoPrivado() {
+        int cantidadDeVuelosPublicos = (int) vuelos.keySet().stream().filter(s -> {
+            return s.endsWith("key");
+        }).count();
+
+        return cantidadDeVuelosPublicos + "-PRIV";
+    }
+
+
 }

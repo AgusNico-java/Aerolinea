@@ -1,25 +1,27 @@
 package TADs;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class VueloInternacional extends VueloPublico{
-    private Aeropuerto escala;
+    private String[] escalas;
+    private int cantRefrigerios;
 
-    public VueloInternacional(String destino, int cantidadAsientos, int totalTripulantes, int asientosDisponibles, double valorPasaje, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, LocalDateTime horaSalida, LocalDateTime horaLlegada, Cliente[] registroPasajeros, int cantidadPasajeros, String refrigerio, HashMap<Cliente, Integer> pasajeros, ArrayList<Seccion> secciones, Aeropuerto escala) {
-        super(destino, cantidadAsientos, totalTripulantes, asientosDisponibles, valorPasaje, aeropuertoSalida, aeropuertoLlegada, horaSalida, horaLlegada, registroPasajeros, cantidadPasajeros, refrigerio, pasajeros, secciones);
-        this. escala = escala;
+    public VueloInternacional(Aeropuerto origen, Aeropuerto destino, String fecha, int tripulantes,
+                              double valorRefrigerio, int cantRefrigerios, double[] precios, int[] cantAsientos, String[] escalas) {
+        super(destino.getNombre(), origen, destino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos);
+        this. escalas = escalas;
+        this.cantRefrigerios = cantRefrigerios;
     }
 
     @Override
     public String toString() {
         return "VueloInternacional{" +
-                "escala=" + escala +
+                "escalas=" + Arrays.toString(escalas) +
+                ", cantRefrigerios=" + cantRefrigerios +
                 ", cantidadPasajeros=" + cantidadPasajeros +
-                ", refrigerio='" + refrigerio + '\'' +
+                ", valorRefrigerio=" + valorRefrigerio +
                 ", pasajeros=" + pasajeros +
-                ", secciones=" + secciones +
+                ", cantidadAsientos=" + Arrays.toString(cantidadAsientos) +
                 '}';
     }
 }
