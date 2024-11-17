@@ -1,22 +1,21 @@
 package TADs;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class VueloNacional extends VueloPublico{
 
-    public VueloNacional(String destino, int cantidadAsientos, int totalTripulantes, int asientosDisponibles, double valorPasaje, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, LocalDateTime horaSalida, LocalDateTime horaLlegada, Cliente[] registroPasajeros, int cantidadPasajeros, String refrigerio, HashMap<Cliente, Integer> pasajeros, ArrayList<Seccion> secciones) {
-        super(destino, cantidadAsientos, totalTripulantes, asientosDisponibles, valorPasaje, aeropuertoSalida, aeropuertoLlegada, horaSalida, horaLlegada, registroPasajeros, cantidadPasajeros, refrigerio, pasajeros, secciones);
+    public VueloNacional(Aeropuerto origen, Aeropuerto destino, String fecha, int tripulantes,
+                         double valorRefrigerio, double[] precios, int[] cantAsientos){
+        super(destino.getNombre(), origen, destino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos);
     }
 
     @Override
     public String toString() {
         return "VueloNacional{" +
                 "cantidadPasajeros=" + cantidadPasajeros +
-                ", refrigerio='" + refrigerio + '\'' +
+                ", valorRefrigerio=" + valorRefrigerio +
                 ", pasajeros=" + pasajeros +
-                ", secciones=" + secciones +
+                ", cantidadAsientos=" + Arrays.toString(cantidadAsientos) +
                 '}';
     }
 }

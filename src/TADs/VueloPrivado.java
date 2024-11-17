@@ -9,18 +9,14 @@ public class VueloPrivado extends Vuelo {
     private Cliente comprador;
     private HashMap<Integer, Cliente> clientes;
 
-    public VueloPrivado(String destino, int cantidadAsientos, int totalTripulantes, int asientosDisponibles, double valorPasaje, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, LocalDateTime horaSalida, LocalDateTime horaLlegada, Cliente[] registroPasajeros, double precioJet, int capacidadMaximaJet, Cliente comprador, HashMap<Integer, Cliente> clientes) {
-        super(destino, cantidadAsientos, totalTripulantes, asientosDisponibles, valorPasaje, aeropuertoSalida, aeropuertoLlegada, horaSalida, horaLlegada, registroPasajeros);
-        this.precioJet = precioJet;
-        this.capacidadMaximaJet = capacidadMaximaJet;
-        this.comprador = comprador;
-        this.clientes = clientes;
+    public VueloPrivado(String destino, int totalTripulantes, double[] precios, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, String fechaSalida) {
+        super(destino, totalTripulantes, precios, aeropuertoSalida, aeropuertoLlegada, fechaSalida);
     }
 
     @Override
     public String toString() {
+
         return "VueloPrivado{" +
-                super.toString() +
                 "precioJet=" + precioJet +
                 ", capacidadMaximaJet=" + capacidadMaximaJet +
                 ", comprador=" + comprador +

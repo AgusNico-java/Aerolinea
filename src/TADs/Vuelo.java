@@ -1,71 +1,54 @@
 package TADs;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public abstract class Vuelo {
     private String destino;
 
-    private int cantidadAsientos;
-    private int totalTripulantes;
-    private int asientosDisponibles;
-    private double valorPasaje;
+	private int totalTripulantes;
+    private double[] precios;
 
     private Aeropuerto aeropuertoSalida;
     private Aeropuerto aeropuertoLlegada;
 
-    private LocalDateTime horaSalida;
-    private LocalDateTime horaLlegada;
+    private String fechaSalida;
 
     private Cliente[] registroPasajeros;
 
-    public Vuelo(String destino, int cantidadAsientos, int totalTripulantes, int asientosDisponibles, double valorPasaje, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, LocalDateTime horaSalida, LocalDateTime horaLlegada, Cliente[] registroPasajeros) {
+    public Vuelo(String destino, int totalTripulantes, double[] precios,
+				 Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, String fechaSalida) {
+
         this.destino = destino;
-        this.cantidadAsientos = cantidadAsientos;
-        this.totalTripulantes = totalTripulantes;
-        this.asientosDisponibles = asientosDisponibles;
-        this.valorPasaje = valorPasaje;
+		this.totalTripulantes = totalTripulantes;
+        this.precios = precios;
         this.aeropuertoSalida = aeropuertoSalida;
         this.aeropuertoLlegada = aeropuertoLlegada;
-        this.horaSalida = horaSalida;
-        this.horaLlegada = horaLlegada;
-        this.registroPasajeros = registroPasajeros;
+        this.fechaSalida = fechaSalida;
     }
 
-    @Override
-    public String toString() {
-        return "Vuelo{" +
-                "destino='" + destino + '\'' +
-                ", cantidadAsientos=" + cantidadAsientos +
-                ", totalTripulantes=" + totalTripulantes +
-                ", asientosDisponibles=" + asientosDisponibles +
-                ", valorPasaje=" + valorPasaje +
-                ", aeropuertoSalida=" + aeropuertoSalida +
-                ", aeropuertoLlegada=" + aeropuertoLlegada +
-                ", horaSalida=" + horaSalida +
-                ", horaLlegada=" + horaLlegada +
-                ", registroPasajeros=" + Arrays.toString(registroPasajeros) +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Vuelo{" +
+				"destino='" + destino + '\'' +
+				", totalTripulantes=" + totalTripulantes +
+				", precios=" + Arrays.toString(precios) +
+				", aeropuertoSalida=" + aeropuertoSalida +
+				", aeropuertoLlegada=" + aeropuertoLlegada +
+				", fechaSalida='" + fechaSalida + '\'' +
+				", registroPasajeros=" + Arrays.toString(registroPasajeros) +
+				'}';
+	}
 
 	public String getDestino() {
 		return destino;
-	}
-
-	public int getCantidadAsientos() {
-		return cantidadAsientos;
 	}
 
 	public int getTotalTripulantes() {
 		return totalTripulantes;
 	}
 
-	public int getAsientosDisponibles() {
-		return asientosDisponibles;
-	}
-
-	public double getValorPasaje() {
-		return valorPasaje;
+	public double[] getPrecios() {
+		return precios;
 	}
 
 	public Aeropuerto getAeropuertoSalida() {
@@ -76,15 +59,15 @@ public abstract class Vuelo {
 		return aeropuertoLlegada;
 	}
 
-	public LocalDateTime getHoraSalida() {
-		return horaSalida;
-	}
-
-	public LocalDateTime getHoraLlegada() {
-		return horaLlegada;
+	public String getFechaSalida() {
+		return fechaSalida;
 	}
 
 	public Cliente[] getRegistroPasajeros() {
 		return registroPasajeros;
+	}
+
+	public boolean paisSalidaIgualPaisDestino() {
+		return aeropuertoSalida.getPais().equals(aeropuertoLlegada.getPais());
 	}
 }
