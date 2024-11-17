@@ -1,21 +1,21 @@
 import TADs.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 
 public class Aerolinea implements IAerolinea {
     private String name;
     private Map<String, Vuelo> vuelos;
-    private ArrayList<Cliente> clientes;
+    private Map<Integer, Cliente> clientes;
     private Map<String, Aeropuerto> aeropuertos;
     private String cuit;
 
     public Aerolinea(String name, String cuit) {
         this.name = name;
         this.cuit = cuit;
-        this.clientes = new ArrayList<>();
+        this.clientes = new HashMap<>();
         this.aeropuertos = new HashMap<>();
         this.vuelos = new HashMap<>();
     }
@@ -23,14 +23,12 @@ public class Aerolinea implements IAerolinea {
     @Override
 	public void registrarCliente(int dni, String nombre, String telefono) {
 		// Verificar si ya existe un cliente con el mismo DNI
-		for (Cliente cliente : clientes) {
-			if (cliente.getDni() == dni) {
-				throw new RuntimeException("El cliente con DNI " + dni + " ya está registrado.");
-			}
-		}
+        if (clientes.containsKey(dni)) {
+            throw new RuntimeException("El cliente con DNI " + dni + " ya está registrado.");
+        }
 		// Crear un nuevo cliente y agregarlo a la lista
 		Cliente nuevoCliente = new Cliente(dni, nombre, telefono);
-		clientes.add(nuevoCliente);
+		clientes.put(dni, nuevoCliente);
 	}
 
 	@Override
@@ -82,7 +80,39 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public String VenderVueloPrivado(String origen, String destino, String fecha, int tripulantes, double precio, int dniComprador, int[] acompaniantes) {
-        return "";
+        if (!aeropuertos.containsKey(destino)) {
+            throw new RuntimeException("El destino " + destino + " no está registrado.");
+        }
+        if (!aeropuertos.containsKey(origen)) {
+            throw new RuntimeException("El origen " + origen + " no está registrado.");
+        }
+        if (!fechaValida(fecha)) {
+            throw new RuntimeException("La fecha debe ser posterior a la fecha actual.");
+        }
+        Cliente comprador = clientes.get(dniComprador);
+        ArrayList<Cliente> listaDeAcompaniantes = new ArrayList<>();
+        Aeropuerto aeropuertoSalida = aeropuertos.get(origen);
+        Aeropuerto aeropuertoDestino = aeropuertos.get(destino);
+
+
+        for (int dni : acompaniantes) {
+            listaDeAcompaniantes.add(clientes.get(dni));
+        }
+
+        Cliente[] arregloDeAcompaniantes = listaDeAcompaniantes.toArray(new Cliente[listaDeAcompaniantes.size()]);
+        Vuelo vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio);
+        String codVuelo = crearCodigoPrivado();
+
+        vuelos.put(codVuelo, vuelo);
+
+        return codVuelo;
+    }
+
+    private boolean fechaValida(String fecha) {
+        Date fechaIngresada = new Date(fecha);
+        Date hoy = Calendar.getInstance().getTime();
+
+        return hoy.before(fechaIngresada);
     }
 
     @Override
@@ -165,7 +195,7 @@ public class Aerolinea implements IAerolinea {
             return s.endsWith("key");
         }).count();
 
-        return cantidadDeVuelosPublicos + "-PRIV";
+        return cantidadDeVuelosPublicos + "-PRI";
     }
 
 
