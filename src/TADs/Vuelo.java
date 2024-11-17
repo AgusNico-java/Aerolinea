@@ -1,9 +1,12 @@
 package TADs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class Vuelo {
     private String destino;
+    private ArrayList<Seccion> secciones;
 
 	private int totalTripulantes;
     private double[] precios;
@@ -38,7 +41,9 @@ public abstract class Vuelo {
 				", registroPasajeros=" + Arrays.toString(registroPasajeros) +
 				'}';
 	}
-
+	public List<Seccion> getSecciones() {
+	    return secciones;
+	}
 	public String getDestino() {
 		return destino;
 	}

@@ -147,30 +147,51 @@ public class Aerolinea implements IAerolinea {
     }
 
 	// FALTA IMPLEMENTAR REGISTRO DE VUELO
-	@Override
-	public double totalRecaudado(String destino) {
-		double totalRecaudado = 0.0;
+   @Override
+    public double totalRecaudado(String destino) {
+        double totalRecaudado = 0.0;
 
-		for (Vuelo vuelo : vuelos.values()) {
-			if (vuelo.getDestino().equals(destino)) {
-				//totalRecaudado += vuelo.getPrecios();
-			}
-		}
-		return totalRecaudado;
-	}
+        for (Vuelo vuelo : vuelos.values()) {
+            if (vuelo.getDestino().equals(destino)) {
+                for (double precio : vuelo.getPrecios()) {
+                    totalRecaudado += precio;
+                }
+            }
+        }
+        return totalRecaudado;
+    }
 
-	// FALTA IMPLEMENTAR REGISTRO DE VUELO
-	@Override
-	public String detalleDeVuelo(String codVuelo) {
-		Vuelo vuelo = vuelos.get(codVuelo);
+   @Override
+   public String detalleDeVuelo(String codVuelo) {
+       Vuelo vuelo = vuelos.get(codVuelo);
 
-		if (vuelo != null) {
-			return vuelo.toString();
-		} else {
-			return "El vuelo con código " + codVuelo + " no existe.";
-		}
-	}
+       if (vuelo == null) {
+           return "El vuelo con código " + codVuelo + " no existe.";
+       }
 
+       //Aca vemos el tipo de vuelo
+       if (vuelo instanceof VueloPrivado) {
+           VueloPrivado vueloPrivado = (VueloPrivado) vuelo;
+           int cantidadPasajeros = 1; // Comprador
+           if (vueloPrivado.getRegistroPasajeros() != null) {
+               cantidadPasajeros += vueloPrivado.getRegistroPasajeros().length;
+           }
+           return codVuelo + " - " 
+               + vuelo.getAeropuertoSalida().getNombre() + " - "
+               + vuelo.getAeropuertoLlegada().getNombre() + " - "
+               + vuelo.getFechaSalida() + " - PRIVADO (" + cantidadPasajeros + ")";
+       }
+
+       String tipoVuelo = "NACIONAL";
+       if (vuelo instanceof VueloInternacional) {
+           tipoVuelo = "INTERNACIONAL";
+       }
+
+       return codVuelo + " - " 
+           + vuelo.getAeropuertoSalida().getNombre() + " - "
+           + vuelo.getAeropuertoLlegada().getNombre() + " - "
+           + vuelo.getFechaSalida() + " - " + tipoVuelo;
+   }
     @Override
     public String toString() {
         //TODO: IMPLEMENTAR

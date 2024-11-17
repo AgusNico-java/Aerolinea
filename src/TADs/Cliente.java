@@ -4,6 +4,7 @@ public class Cliente {
     private int dni;
     private String telefono;
     private String nombre;
+    private int codPasaje;
 
     public Cliente(int dni, String telefono, String nombre) {
         this.dni = dni;
@@ -20,6 +21,9 @@ public class Cliente {
                 '}';
     }
 
+    public int getCodPasaje() {
+    return codPasaje;
+}
 	public int getDni() {
 		return dni;
 	}
@@ -31,4 +35,8 @@ public class Cliente {
 	public String getNombre() {
 		return nombre;
 	}
+
+	public void setCodPasaje(int codPasaje) {
+    this.codPasaje = codPasaje;
+}
 }
