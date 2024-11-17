@@ -25,20 +25,17 @@ public abstract class VueloPublico extends Vuelo {
 
         for (int i = 0; i < cantidadAsientos[0]; i++) {
             int numeroAsiento = 1 + i;
-            System.out.println(numeroAsiento);
             asientosDisponibles.put(numeroAsiento, "Turista");
         }
 
         for (int i = 0; i < cantidadAsientos[1]; i++) {
             int numeroAsiento = cantidadAsientos[0] + i + 1;
-            System.out.println(numeroAsiento);
             asientosDisponibles.put(numeroAsiento, "Ejecutiva");
         }
 
         if (cantidadAsientos.length == 3){
             for (int i = 0; i < cantidadAsientos[2]; i++) {
                 int numeroAsiento = cantidadAsientos[0] + cantidadAsientos[1] + i + 1;
-                System.out.println(numeroAsiento);
                 asientosDisponibles.put(numeroAsiento, "Primera clase");
             }
         }
