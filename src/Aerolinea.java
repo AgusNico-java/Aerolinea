@@ -1,8 +1,5 @@
 import TADs.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Aerolinea implements IAerolinea {
@@ -11,7 +8,7 @@ public class Aerolinea implements IAerolinea {
     private Map<Integer, Cliente> clientes;
     private Map<String, Aeropuerto> aeropuertos;
     private String cuit;
-    private int codigoPasaje;
+    private int codigoPasajeActual;
 
     public Aerolinea(String name, String cuit) {
         this.name = name;
@@ -19,7 +16,7 @@ public class Aerolinea implements IAerolinea {
         this.clientes = new HashMap<>();
         this.aeropuertos = new HashMap<>();
         this.vuelos = new HashMap<>();
-        this.codigoPasaje = 0;
+        this.codigoPasajeActual = 0;
     }
 
     @Override
@@ -132,7 +129,7 @@ public class Aerolinea implements IAerolinea {
             throw new RuntimeException("El vuelo no existe");
         }
 
-        this.codigoPasaje = codigoPasaje + 1;
+        this.codigoPasajeActual = codigoPasajeActual + 1;
         VueloPublico vuelo = (VueloPublico) this.vuelos.get(codVuelo);
         Cliente cliente = clientes.get(dni);
 
@@ -140,10 +137,10 @@ public class Aerolinea implements IAerolinea {
             throw new RuntimeException("El número de asiento ya se encuentra vendido.");
         }
         Asiento asientoVendido = vuelo.getAsientosVuelo().get(nroAsiento - 1);
-        asientoVendido.asignarAsiento(cliente, aOcupar, this.codigoPasaje);
+        asientoVendido.asignarAsiento(cliente, aOcupar, this.codigoPasajeActual);
         vuelo.getAsientosDisponibles().remove(nroAsiento);
 
-        return this.codigoPasaje;
+        return this.codigoPasajeActual;
     }
 
     @Override
