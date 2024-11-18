@@ -30,9 +30,8 @@ public class Asiento {
         return cliente;
     }
 
-    // Setter para cliente
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public String getSeccion() {
+        return seccion;
     }
 
     // Getter para código de pasaje
@@ -40,9 +39,10 @@ public class Asiento {
         return codPasaje;
     }
 
-    // Setter para código de pasaje
-    public void setCodPasaje(int codPasaje) {
-        this.codPasaje = codPasaje;
+    public void eliminarCliente() {
+        this.cliente = null;
+        this.ocupado = false;
+        this.codPasaje = 0;
     }
 
     @Override

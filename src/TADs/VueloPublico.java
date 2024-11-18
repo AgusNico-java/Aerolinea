@@ -55,6 +55,15 @@ public abstract class VueloPublico extends Vuelo {
         return asientosDisponibles;
     }
 
+    public void cancelarPasaje(int dni, int nroAsiento) {
+        Asiento asientoCancelado = this.asientosVuelo.get(nroAsiento - 1);
+        if (asientoCancelado.getCliente().getDni() == dni) {
+            asientosDisponibles.put(asientoCancelado.getNumeroAsiento(), asientoCancelado.getSeccion());
+            asientoCancelado.eliminarCliente();
+            asientosVuelo.add(asientoCancelado);
+        }
+    }
+
     public Map<Integer, String> getAsientosDisponibles() {
         return asientosDisponibles;
     }

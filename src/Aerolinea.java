@@ -129,7 +129,7 @@ public class Aerolinea implements IAerolinea {
             throw new RuntimeException("El cliente debe estar registrado para comprar un pasaje");
         }
         if (!vuelos.containsKey(codVuelo)) {
-            throw new RuntimeException("El cliente debe estar registrado para comprar un pasaje");
+            throw new RuntimeException("El vuelo no existe");
         }
 
         this.codigoPasaje = codigoPasaje + 1;
@@ -162,7 +162,12 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public void cancelarPasaje(int dni, String codVuelo, int nroAsiento) {
+        if (!this.vuelos.containsKey(codVuelo)) {
+            throw new RuntimeException("El vuelo no existe");
+        }
 
+        VueloPublico vuelo = (VueloPublico) vuelos.get(codVuelo);
+        vuelo.cancelarPasaje(dni, nroAsiento);
     }
 
     @Override
