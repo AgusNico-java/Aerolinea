@@ -11,6 +11,7 @@ public class Aerolinea implements IAerolinea {
     private Map<Integer, Cliente> clientes;
     private Map<String, Aeropuerto> aeropuertos;
     private String cuit;
+    private int codigoPasaje;
 
     public Aerolinea(String name, String cuit) {
         this.name = name;
@@ -18,6 +19,7 @@ public class Aerolinea implements IAerolinea {
         this.clientes = new HashMap<>();
         this.aeropuertos = new HashMap<>();
         this.vuelos = new HashMap<>();
+        this.codigoPasaje = 0;
     }
 
     @Override
@@ -123,7 +125,25 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public int venderPasaje(int dni, String codVuelo, int nroAsiento, boolean aOcupar) {
-        return 0;
+        if (!clientes.containsKey(dni)) {
+            throw new RuntimeException("El cliente debe estar registrado para comprar un pasaje");
+        }
+        if (!vuelos.containsKey(codVuelo)) {
+            throw new RuntimeException("El cliente debe estar registrado para comprar un pasaje");
+        }
+
+        this.codigoPasaje = codigoPasaje + 1;
+        VueloPublico vuelo = (VueloPublico) this.vuelos.get(codVuelo);
+        Cliente cliente = clientes.get(dni);
+
+        if (!vuelo.getAsientosDisponibles().containsKey(nroAsiento)) {
+            throw new RuntimeException("El número de asiento ya se encuentra vendido.");
+        }
+        Asiento asientoVendido = vuelo.getAsientosVuelo().get(nroAsiento - 1);
+        asientoVendido.asignarAsiento(cliente, aOcupar, this.codigoPasaje);
+        vuelo.getAsientosDisponibles().remove(nroAsiento);
+
+        return this.codigoPasaje;
     }
 
     @Override
