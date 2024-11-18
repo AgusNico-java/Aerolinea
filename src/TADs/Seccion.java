@@ -1,6 +1,7 @@
 package TADs;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Seccion {
     private int capacidad;
@@ -21,4 +22,9 @@ public class Seccion {
                 ", asientos=" + asientos +
                 '}';
     }
+
+    public List<Asiento> getAsientos() {
+        return asientos;
+    }
+
 }
