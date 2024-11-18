@@ -1,8 +1,13 @@
 package TADs;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public abstract class Vuelo {
     private String destino;
@@ -74,5 +79,18 @@ public abstract class Vuelo {
 
 	public boolean paisSalidaIgualPaisDestino() {
 		return aeropuertoSalida.getPais().equals(aeropuertoLlegada.getPais());
+	}
+
+	public boolean esVueloSimilar(String origenAComparar, String destinoAComparar, String fechaAComparar) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String origenVuelo = this.aeropuertoSalida.getNombre();
+		String destinoVuelo = this.destino;
+
+		LocalDate fechaVuelo = LocalDate.parse(this.fechaSalida, formatter);
+		LocalDate dateFechaAComparar = LocalDate.parse(fechaAComparar, formatter);
+
+		return origenVuelo.equals(origenAComparar) &&
+				destinoVuelo.equals(destinoAComparar) &&
+				DAYS.between(fechaVuelo, dateFechaAComparar) <= 7;
 	}
 }

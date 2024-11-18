@@ -148,7 +148,16 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public List<String> consultarVuelosSimilares(String origen, String destino, String Fecha) {
-        return List.of();
+        List<String> vuelosSimilares = new ArrayList<>();
+
+        for (String key : vuelos.keySet()) {
+            Vuelo vuelo = vuelos.get(key);
+            if (vuelo.esVueloSimilar(origen, destino, Fecha)) {
+                vuelosSimilares.add(key);
+            }
+        }
+
+        return vuelosSimilares;
     }
 
     @Override
