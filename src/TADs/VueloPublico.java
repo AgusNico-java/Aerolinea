@@ -1,5 +1,6 @@
 package TADs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ public abstract class VueloPublico extends Vuelo {
     HashMap<Cliente, Integer> pasajeros;
     int[] cantidadAsientos;
     Map<Integer, String> asientosDisponibles;
+    ArrayList<Asiento> asientosVuelo;
 
     public VueloPublico(String destino, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada,
                         String fecha, int tripulantes, double valorRefrigerio, double[] precios,
@@ -18,6 +20,16 @@ public abstract class VueloPublico extends Vuelo {
         this.cantidadAsientos = cantidadAsientos;
         this.valorRefrigerio = valorRefrigerio;
         this.asientosDisponibles = inicializarAsientosDisponibles(cantidadAsientos);
+        this.asientosVuelo = generarAsientos();
+    }
+
+    private ArrayList<Asiento> generarAsientos() {
+        ArrayList<Asiento> asientos = new ArrayList<>();
+        for (int numeroAsiento : asientosDisponibles.keySet()) {
+            Asiento nuevoAsiento = new Asiento(asientosDisponibles.get(numeroAsiento), numeroAsiento);
+            asientos.add(nuevoAsiento);
+        }
+        return asientos;
     }
 
     private Map<Integer, String> inicializarAsientosDisponibles(int[] cantidadAsientos) {
@@ -47,6 +59,9 @@ public abstract class VueloPublico extends Vuelo {
         return asientosDisponibles;
     }
 
+    public ArrayList<Asiento> getAsientosVuelo() {
+        return asientosVuelo;
+    }
 
     @Override
     public String toString() {
