@@ -1,10 +1,12 @@
 package TADs;
 
+import java.util.ArrayList;
+
 public class Cliente {
     private int dni;
     private String telefono;
     private String nombre;
-    private int codPasaje;
+    private ArrayList<Integer> codPasaje;
 
     public Cliente(int dni, String telefono, String nombre) {
         this.dni = dni;
@@ -21,7 +23,7 @@ public class Cliente {
                 '}';
     }
 
-    public int getCodPasaje() {
+    public ArrayList<Integer> getCodPasaje() {
     return codPasaje;
 }
 	public int getDni() {
@@ -36,7 +38,4 @@ public class Cliente {
 		return nombre;
 	}
 
-	public void setCodPasaje(int codPasaje) {
-    this.codPasaje = codPasaje;
-}
 }

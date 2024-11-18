@@ -72,6 +72,15 @@ public abstract class VueloPublico extends Vuelo {
         return asientosVuelo;
     }
 
+    public int pasajePertenece(int codPasaje) {
+        for (Asiento asiento : asientosVuelo) {
+            if (asiento.getCodPasaje() == codPasaje) {
+                return asiento.getNumeroAsiento();
+            }
+        }
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "VueloPublico{" +

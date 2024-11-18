@@ -169,7 +169,13 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public void cancelarPasaje(int dni, int codPasaje) {
-
+        for (String key : this.vuelos.keySet()) {
+            VueloPublico vueloPublico = (VueloPublico) vuelos.get(key);
+            int numeroAsiento = vueloPublico.pasajePertenece(codPasaje);
+            if (numeroAsiento != 0) {
+                vueloPublico.cancelarPasaje(dni, numeroAsiento);
+            }
+        }
     }
 
     @Override
