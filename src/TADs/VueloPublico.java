@@ -8,6 +8,7 @@ import java.util.Map;
 public abstract class VueloPublico extends Vuelo {
     int cantidadPasajeros;
     double valorRefrigerio;
+    int cantRefrigerios;
     HashMap<Cliente, Integer> pasajeros;
     int[] cantidadAsientos;
     Map<Integer, String> asientosDisponibles;
@@ -15,12 +16,13 @@ public abstract class VueloPublico extends Vuelo {
 
     public VueloPublico(String destino, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada,
                         String fecha, int tripulantes, double valorRefrigerio, double[] precios,
-                        int[] cantidadAsientos, String codVuelo){
+                        int[] cantidadAsientos, String codVuelo, int cantRefrigerios){
         super(destino, tripulantes, precios, aeropuertoSalida, aeropuertoLlegada, fecha, codVuelo);
         this.cantidadAsientos = cantidadAsientos;
         this.valorRefrigerio = valorRefrigerio;
         this.asientosDisponibles = inicializarAsientosDisponibles(cantidadAsientos);
         this.asientosVuelo = generarAsientos();
+        this.cantRefrigerios = cantRefrigerios;
     }
 
     private ArrayList<Asiento> generarAsientos() {
@@ -66,6 +68,14 @@ public abstract class VueloPublico extends Vuelo {
 
     public Map<Integer, String> getAsientosDisponibles() {
         return asientosDisponibles;
+    }
+
+    public double getValorRefrigerio() {
+        return valorRefrigerio;
+    }
+
+    public int getCantRefrigerios() {
+        return cantRefrigerios;
     }
 
     public ArrayList<Asiento> getAsientosVuelo() {

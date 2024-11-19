@@ -3,10 +3,13 @@ import TADs.*;
 import java.util.*;
 
 public class Aerolinea implements IAerolinea {
+    private final double impuestoAVueloPublico = 0.2;
+    private final double impuestoAVueloPrivado = 0.3;
     private String name;
     private Map<String, Vuelo> vuelos;
     private Map<Integer, Cliente> clientes;
     private Map<String, Aeropuerto> aeropuertos;
+    private Map<String, Double> recaudadoPorDestino;
     private String cuit;
     private int codigoPasajeActual;
 
@@ -16,6 +19,7 @@ public class Aerolinea implements IAerolinea {
         this.clientes = new HashMap<>();
         this.aeropuertos = new HashMap<>();
         this.vuelos = new HashMap<>();
+        this.recaudadoPorDestino = new HashMap<>();
         this.codigoPasajeActual = 0;
     }
 
@@ -141,9 +145,35 @@ public class Aerolinea implements IAerolinea {
         }
         Asiento asientoVendido = vuelo.getAsientosVuelo().get(nroAsiento - 1);
         asientoVendido.asignarAsiento(cliente, aOcupar, this.codigoPasajeActual);
+        incrementarRecaudadoPublico(vuelo, nroAsiento);
         vuelo.getAsientosDisponibles().remove(nroAsiento);
 
         return this.codigoPasajeActual;
+    }
+
+    private void incrementarRecaudadoPublico(VueloPublico vuelo, int nroAsiento) {
+        String seccion = vuelo.getAsientosDisponibles().get(nroAsiento);
+        String destino = vuelo.getDestino();
+        double recaudado = this.recaudadoPorDestino.get(destino) != null ? this.recaudadoPorDestino.get(destino)
+                : 0;
+        double esteVuelo = 0;
+        int cantidadRefrigerio = vuelo.getCantRefrigerios();
+        double valorRefrigerio = vuelo.getValorRefrigerio();
+
+        if (seccion.equals("Turista")){
+            esteVuelo = esteVuelo + vuelo.getPrecios()[0];
+        } else if (seccion.equals("Ejecutiva")) {
+            esteVuelo = esteVuelo + vuelo.getPrecios()[1];
+        } else if (seccion.equals("Primera clase")) {
+            esteVuelo = esteVuelo + vuelo.getPrecios()[2];
+        }
+        esteVuelo = esteVuelo + (valorRefrigerio * cantidadRefrigerio);
+        double impuesto = esteVuelo * impuestoAVueloPublico;
+        esteVuelo = esteVuelo + impuesto;
+        recaudado = recaudado + esteVuelo;
+
+        this.recaudadoPorDestino.put(destino, recaudado);
+
     }
 
     @Override
@@ -244,33 +274,13 @@ public class Aerolinea implements IAerolinea {
                 }).toList();
     }
 
-    private List<Vuelo> vuelosPorDestino(List<Vuelo> lista, String destino) {
-        return lista.stream()
-                .filter(vuelo -> {
-                    return vuelo.getDestino().equals(destino);
-                }).toList();
-    }
-
-    private List<Vuelo> vuelosPorFecha(List<Vuelo> lista, String fecha) {
-        return lista.stream()
-                .filter(vuelo -> {
-                    return vuelo.getFechaSalida().equals(fecha);
-                }).toList();
-    }
-
 	// FALTA IMPLEMENTAR REGISTRO DE VUELO
    @Override
     public double totalRecaudado(String destino) {
-        double totalRecaudado = 0.0;
-
-        for (Vuelo vuelo : vuelos.values()) {
-            if (vuelo.getDestino().equals(destino)) {
-                for (double precio : vuelo.getPrecios()) {
-                    totalRecaudado += precio;
-                }
-            }
+        if (!this.recaudadoPorDestino.containsKey(destino)) {
+            return 0;
         }
-        return totalRecaudado;
+        return this.recaudadoPorDestino.get(destino);
     }
 
    @Override
