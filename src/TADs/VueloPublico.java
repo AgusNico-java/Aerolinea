@@ -107,7 +107,6 @@ public abstract class VueloPublico extends Vuelo {
     }
 
     private boolean perteneceSeccion(int asiento, String seccion) {
-        System.out.println(this.asientosDisponibles.get(asiento).equals(seccion));
         return this.asientosDisponibles.get(asiento).equals(seccion);
     }
 

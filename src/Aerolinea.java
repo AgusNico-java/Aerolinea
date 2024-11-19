@@ -104,14 +104,27 @@ public class Aerolinea implements IAerolinea {
         for (int dni : acompaniantes) {
             listaDeAcompaniantes.add(clientes.get(dni));
         }
+        int totalPasajeros = listaDeAcompaniantes.size() + 1;
 
         Cliente[] arregloDeAcompaniantes = listaDeAcompaniantes.toArray(new Cliente[listaDeAcompaniantes.size()]);
         String codVuelo = crearCodigoPrivado();
         Vuelo vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio, codVuelo);
 
+        incrementarRecaudadoPrivado(totalPasajeros, precio, destino);
         vuelos.put(codVuelo, vuelo);
 
         return codVuelo;
+    }
+
+    private void incrementarRecaudadoPrivado(double totalPasajeros, double precio, String destino) {
+        int cantidadDeJets = (int) Math.ceil(totalPasajeros / 15);
+        double totalVuelo = precio * cantidadDeJets;
+        double impuesto = totalVuelo * impuestoAVueloPrivado;
+        totalVuelo = totalVuelo + impuesto;
+        double recaudado = this.recaudadoPorDestino.get(destino) != null ? this.recaudadoPorDestino.get(destino)
+                : 0;
+        recaudado = recaudado + totalVuelo;
+        this.recaudadoPorDestino.put(destino, recaudado);
     }
 
     private boolean fechaValida(String fecha) {
@@ -227,7 +240,6 @@ public class Aerolinea implements IAerolinea {
         for (String posibleReemplazo : consultarVuelosSimilares(origen, destino, fecha)) {
             vuelosDeReemplazo.add(vuelos.get(posibleReemplazo));
         }
-        System.out.println(vuelosDeReemplazo);
 
         //Revisamos cada asiento del vuelo en búsqueda de los clientes existentes
         for (Asiento asiento : vueloACancelar.getAsientosVuelo()) {
