@@ -44,16 +44,17 @@ public class Aerolinea implements IAerolinea {
                                                 double valorRefrigerio, double[] precios, int[] cantAsientos) {
         Aeropuerto aeropuertoSalida = aeropuertos.get(origen);
         Aeropuerto aeropuertoDestino = aeropuertos.get(destino);
-        Vuelo vuelo = new VueloNacional(aeropuertoSalida, aeropuertoDestino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos); // ver esto despues
-        String codVuelo = crearCodigoPublico();
 
         if (!aeropuertos.containsKey(destino)) {
             throw new RuntimeException("El destino " + destino + " no está registrado.");
         }
+        String codVuelo = crearCodigoPublico();
+        Vuelo vuelo = new VueloNacional(aeropuertoSalida, aeropuertoDestino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos, codVuelo);
 
         if (!vuelo.paisSalidaIgualPaisDestino()) {
             throw new RuntimeException("Los datos ingresados corresponden a un vuelo internacional");
         }
+
 		vuelos.put(codVuelo, vuelo);
 
 		return codVuelo;
@@ -61,13 +62,15 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public String registrarVueloPublicoInternacional(String origen, String destino, String fecha, int tripulantes, double valorRefrigerio, int cantRefrigerios, double[] precios, int[] cantAsientos, String[] escalas) {
-        Vuelo vuelo = new VueloInternacional(aeropuertos.get(origen), aeropuertos.get(destino), fecha, tripulantes, valorRefrigerio, cantRefrigerios, precios, cantAsientos, escalas);
-        String codVuelo = crearCodigoPublico();
 
         if (!aeropuertos.containsKey(destino)) {
             throw new RuntimeException("El destino " + destino + " no está registrado.");
 
         }
+
+        String codVuelo = crearCodigoPublico();
+        Vuelo vuelo = new VueloInternacional(aeropuertos.get(origen), aeropuertos.get(destino), fecha, tripulantes, valorRefrigerio, cantRefrigerios, precios, cantAsientos, escalas, codVuelo);
+
         if (vuelo.paisSalidaIgualPaisDestino()) {
             throw new RuntimeException("Los datos ingresados corresponden a un vuelo nacional.");
         }
@@ -99,8 +102,8 @@ public class Aerolinea implements IAerolinea {
         }
 
         Cliente[] arregloDeAcompaniantes = listaDeAcompaniantes.toArray(new Cliente[listaDeAcompaniantes.size()]);
-        Vuelo vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio);
         String codVuelo = crearCodigoPrivado();
+        Vuelo vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio, codVuelo);
 
         vuelos.put(codVuelo, vuelo);
 
@@ -180,7 +183,79 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public List<String> cancelarVuelo(String codVuelo) {
-        return List.of();
+        if (!this.vuelos.containsKey(codVuelo)) {
+            throw new RuntimeException("El vuelo no existe");
+        }
+        VueloPublico vueloACancelar = (VueloPublico) this.vuelos.get(codVuelo);
+        String origen = vueloACancelar.getAeropuertoSalida().getNombre();
+        String destino = vueloACancelar.getAeropuertoLlegada().getNombre();
+        String fecha = vueloACancelar.getFechaSalida();
+        List<Vuelo> vuelosDeReemplazo = new ArrayList<>();
+        List<String> estadoPasajeros = new ArrayList<>();
+
+        //Obtenemos los candidatos a reemplazo del vuelo cancelado (mismo origen, destino y fecha)
+        for (String posibleReemplazo : consultarVuelosSimilares(origen, destino, fecha)) {
+            vuelosDeReemplazo.add(vuelos.get(posibleReemplazo));
+        }
+        System.out.println(vuelosDeReemplazo);
+
+        //Revisamos cada asiento del vuelo en búsqueda de los clientes existentes
+        for (Asiento asiento : vueloACancelar.getAsientosVuelo()) {
+            Cliente cliente = asiento.getCliente();
+            String estadoPasajero = "";
+            String nuevoVuelo;
+            if (cliente != null) {
+                estadoPasajero = estadoPasajero +
+                        cliente.getDni() + " - " +
+                        cliente.getNombre() + " - " +
+                        cliente.getTelefono() + " - ";
+                nuevoVuelo = reasignarVuelo(cliente, asiento, vuelosDeReemplazo);
+                estadoPasajero = estadoPasajero + nuevoVuelo;
+                estadoPasajeros.add(estadoPasajero);
+            }
+        }
+        this.vuelos.remove(codVuelo);
+        return estadoPasajeros;
+    }
+
+    private String reasignarVuelo(Cliente cliente, Asiento asiento, List<Vuelo> vuelosDeReemplazo) {
+        String seccion = asiento.getSeccion();
+        int dni = cliente.getDni();
+        int nroAsiento;
+        for (Vuelo vuelo : vuelosDeReemplazo) {
+            if (!(vuelo.getClass().equals(VueloNacional.class)
+            || vuelo.getClass().equals(VueloInternacional.class))){
+                continue;
+            }
+            VueloPublico nuevaAsignacion = (VueloPublico) vuelo;
+            nroAsiento = nuevaAsignacion.asientoDisponible(seccion);
+            if (nroAsiento != 0) {
+                venderPasaje(dni, nuevaAsignacion.getCodVuelo(), nroAsiento, true);
+                return nuevaAsignacion.getCodVuelo();
+            }
+        }
+        return "CANCELADO";
+    }
+
+    private List<Vuelo> vuelosPorOrigen(List<Vuelo> lista, String origen) {
+        return lista.stream()
+                .filter(vuelo -> {
+                    return vuelo.getAeropuertoSalida().getNombre().equals(origen);
+                }).toList();
+    }
+
+    private List<Vuelo> vuelosPorDestino(List<Vuelo> lista, String destino) {
+        return lista.stream()
+                .filter(vuelo -> {
+                    return vuelo.getDestino().equals(destino);
+                }).toList();
+    }
+
+    private List<Vuelo> vuelosPorFecha(List<Vuelo> lista, String fecha) {
+        return lista.stream()
+                .filter(vuelo -> {
+                    return vuelo.getFechaSalida().equals(fecha);
+                }).toList();
     }
 
 	// FALTA IMPLEMENTAR REGISTRO DE VUELO
@@ -229,6 +304,7 @@ public class Aerolinea implements IAerolinea {
            + vuelo.getAeropuertoLlegada().getNombre() + " - "
            + vuelo.getFechaSalida() + " - " + tipoVuelo;
    }
+
     @Override
     public String toString() {
         //TODO: IMPLEMENTAR
@@ -240,7 +316,7 @@ public class Aerolinea implements IAerolinea {
      */
     private String crearCodigoPublico() {
         int cantidadDeVuelosPublicos = (int) vuelos.keySet().stream().filter(s -> {
-            return s.endsWith("key");
+            return s.endsWith("PUB");
         }).count();
 
         return cantidadDeVuelosPublicos + "-PUB";
@@ -251,7 +327,7 @@ public class Aerolinea implements IAerolinea {
      */
     private String crearCodigoPrivado() {
         int cantidadDeVuelosPublicos = (int) vuelos.keySet().stream().filter(s -> {
-            return s.endsWith("key");
+            return s.endsWith("PRI");
         }).count();
 
         return cantidadDeVuelosPublicos + "-PRI";

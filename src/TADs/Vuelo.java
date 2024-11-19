@@ -20,11 +20,12 @@ public abstract class Vuelo {
     private Aeropuerto aeropuertoLlegada;
 
     private String fechaSalida;
+	private String codVuelo;
 
     private Cliente[] registroPasajeros;
 
     public Vuelo(String destino, int totalTripulantes, double[] precios,
-				 Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, String fechaSalida) {
+				 Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, String fechaSalida, String codVuelo) {
 
         this.destino = destino;
 		this.totalTripulantes = totalTripulantes;
@@ -32,6 +33,7 @@ public abstract class Vuelo {
         this.aeropuertoSalida = aeropuertoSalida;
         this.aeropuertoLlegada = aeropuertoLlegada;
         this.fechaSalida = fechaSalida;
+		this.codVuelo = codVuelo;
     }
 
 	@Override
@@ -59,6 +61,10 @@ public abstract class Vuelo {
 
 	public double[] getPrecios() {
 		return precios;
+	}
+
+	public String getCodVuelo() {
+		return codVuelo;
 	}
 
 	public Aeropuerto getAeropuertoSalida() {

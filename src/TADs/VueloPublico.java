@@ -15,8 +15,8 @@ public abstract class VueloPublico extends Vuelo {
 
     public VueloPublico(String destino, Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada,
                         String fecha, int tripulantes, double valorRefrigerio, double[] precios,
-                        int[] cantidadAsientos){
-        super(destino, tripulantes, precios, aeropuertoSalida, aeropuertoLlegada, fecha);
+                        int[] cantidadAsientos, String codVuelo){
+        super(destino, tripulantes, precios, aeropuertoSalida, aeropuertoLlegada, fecha, codVuelo);
         this.cantidadAsientos = cantidadAsientos;
         this.valorRefrigerio = valorRefrigerio;
         this.asientosDisponibles = inicializarAsientosDisponibles(cantidadAsientos);
@@ -79,6 +79,26 @@ public abstract class VueloPublico extends Vuelo {
             }
         }
         return 0;
+    }
+
+    /**
+     * Devuelve un asiento perteneciente a la sección buscada. Si no encuentra uno, devuelve 0.
+     * @param seccion
+     * @return
+     */
+    public int asientoDisponible(String seccion) {
+        if (this.asientosDisponibles.values().contains(seccion)) {
+            for (int nroAsiento : asientosDisponibles.keySet()) {
+                if (perteneceSeccion(nroAsiento, seccion))
+                    return nroAsiento;
+            }
+        }
+        return 0;
+    }
+
+    private boolean perteneceSeccion(int asiento, String seccion) {
+        System.out.println(this.asientosDisponibles.get(asiento).equals(seccion));
+        return this.asientosDisponibles.get(asiento).equals(seccion);
     }
 
     @Override

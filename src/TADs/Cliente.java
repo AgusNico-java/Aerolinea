@@ -8,7 +8,7 @@ public class Cliente {
     private String nombre;
     private ArrayList<Integer> codPasaje;
 
-    public Cliente(int dni, String telefono, String nombre) {
+    public Cliente(int dni, String nombre, String telefono) {
         this.dni = dni;
         this.telefono = telefono;
         this.nombre = nombre;
