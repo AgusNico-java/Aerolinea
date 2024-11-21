@@ -11,7 +11,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public abstract class Vuelo {
     private String destino;
-    private ArrayList<Seccion> secciones;
 
 	private int totalTripulantes;
     private double[] precios;
@@ -48,9 +47,7 @@ public abstract class Vuelo {
 				", registroPasajeros=" + Arrays.toString(registroPasajeros) +
 				'}';
 	}
-	public List<Seccion> getSecciones() {
-	    return secciones;
-	}
+
 	public String getDestino() {
 		return destino;
 	}

@@ -329,8 +329,32 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public String toString() {
-        //TODO: IMPLEMENTAR
-        return "";
+        StringBuilder builder = new StringBuilder();
+        builder.append("Nombre: " + this.name + "\n" +
+                "CUIT: " + this.cuit + "\n" +
+                "Clientes: {\n");
+
+        for (Cliente cliente : this.clientes.values()) {
+            builder.append(cliente.toString() + "\n");
+        }
+
+        builder.append(" }\n" +
+                "Aeropuertos: {\n");
+
+        for (Aeropuerto aeropuerto : this.aeropuertos.values()) {
+            builder.append(aeropuerto.toString() + "\n");
+        }
+
+        builder.append(" }\n" +
+                "Vuelos: {\n" );
+
+        for (Vuelo vuelo : this.vuelos.values()) {
+            builder.append(vuelo.toString() + "\n");
+        }
+
+        builder.append(" }");
+
+        return builder.toString();
     }
 
     /*
