@@ -21,21 +21,21 @@ public class Asiento {
 
 
     // Getter para número de asiento
-    public int getNumeroAsiento() {
+    public int obtenerNumeroAsiento() {
         return numeroAsiento;
     }
 
     // Getter para cliente
-    public Cliente getCliente() {
+    public Cliente obtenerCliente() {
         return cliente;
     }
 
-    public String getSeccion() {
+    public String obtenerSeccion() {
         return seccion;
     }
 
     // Getter para código de pasaje
-    public int getCodPasaje() {
+    public int obtenerCodPasaje() {
         return codPasaje;
     }
 

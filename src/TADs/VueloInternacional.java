@@ -7,7 +7,7 @@ public class VueloInternacional extends VueloPublico{
 
     public VueloInternacional(Aeropuerto origen, Aeropuerto destino, String fecha, int tripulantes,
                               double valorRefrigerio, int cantRefrigerios, double[] precios, int[] cantAsientos, String[] escalas, String codVuelo) {
-        super(destino.getNombre(), origen, destino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos, codVuelo, cantRefrigerios);
+        super(destino.obtenerNombre(), origen, destino, fecha, tripulantes, valorRefrigerio, precios, cantAsientos, codVuelo, cantRefrigerios);
         this. escalas = escalas;
     }
 

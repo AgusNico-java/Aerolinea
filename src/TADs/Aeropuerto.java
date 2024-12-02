@@ -23,19 +23,11 @@ public class Aeropuerto {
                 '}';
     }
 
-    public String getNombre() {
+    public String obtenerNombre() {
 		return nombre;
 	}
 
-	public String getPais() {
+	public String obtenerPais() {
 		return pais;
-	}
-
-	public String getProvincia() {
-		return provincia;
-	}
-
-	public String getDireccion() {
-		return direccion;
 	}
 }

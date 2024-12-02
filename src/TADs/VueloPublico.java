@@ -60,8 +60,8 @@ public abstract class VueloPublico extends Vuelo {
 
     public void cancelarPasaje(int dni, int nroAsiento) {
         Asiento asientoCancelado = this.asientosVuelo.get(nroAsiento - 1);
-        if (asientoCancelado.getCliente().getDni() == dni) {
-            asientosDisponibles.put(asientoCancelado.getNumeroAsiento(), asientoCancelado.getSeccion());
+        if (asientoCancelado.obtenerCliente().obtenerDni() == dni) {
+            asientosDisponibles.put(asientoCancelado.obtenerNumeroAsiento(), asientoCancelado.obtenerSeccion());
             asientoCancelado.eliminarCliente();
             asientosVuelo.add(asientoCancelado);
         }
@@ -85,8 +85,8 @@ public abstract class VueloPublico extends Vuelo {
 
     public int pasajePertenece(int codPasaje) {
         for (Asiento asiento : asientosVuelo) {
-            if (asiento.getCodPasaje() == codPasaje) {
-                return asiento.getNumeroAsiento();
+            if (asiento.obtenerCodPasaje() == codPasaje) {
+                return asiento.obtenerNumeroAsiento();
             }
         }
         return 0;

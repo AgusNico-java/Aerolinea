@@ -49,10 +49,6 @@ public abstract class Vuelo {
 		return destino;
 	}
 
-	public int getTotalTripulantes() {
-		return totalTripulantes;
-	}
-
 	public double[] obtenerPrecios() {
 		return precios;
 	}
@@ -61,29 +57,29 @@ public abstract class Vuelo {
 		return codVuelo;
 	}
 
-	public Aeropuerto getAeropuertoSalida() {
+	public Aeropuerto obtenerAeropuertoSalida() {
 		return aeropuertoSalida;
 	}
 
-	public Aeropuerto getAeropuertoLlegada() {
+	public Aeropuerto obtenerAeropuertoLlegada() {
 		return aeropuertoLlegada;
 	}
 
-	public String getFechaSalida() {
+	public String obtenerFechaSalida() {
 		return fechaSalida;
 	}
 
-	public Cliente[] getRegistroPasajeros() {
+	public Cliente[] obtenerRegistroPasajeros() {
 		return registroPasajeros;
 	}
 
 	public boolean paisSalidaIgualPaisDestino() {
-		return aeropuertoSalida.getPais().equals(aeropuertoLlegada.getPais());
+		return aeropuertoSalida.obtenerPais().equals(aeropuertoLlegada.obtenerPais());
 	}
 
 	public boolean esVueloSimilar(String origenAComparar, String destinoAComparar, String fechaAComparar) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		String origenVuelo = this.aeropuertoSalida.getNombre();
+		String origenVuelo = this.aeropuertoSalida.obtenerNombre();
 		String destinoVuelo = this.destino;
 
 		LocalDate fechaVuelo = LocalDate.parse(this.fechaSalida, formatter);

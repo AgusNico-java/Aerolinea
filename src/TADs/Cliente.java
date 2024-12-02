@@ -26,15 +26,15 @@ public class Cliente {
     public ArrayList<Integer> getCodPasaje() {
     return codPasaje;
 }
-	public int getDni() {
+	public int obtenerDni() {
 		return dni;
 	}
 	
-	public String getTelefono() {
+	public String obtenerTelefono() {
 		return telefono;
 	}
 	
-	public String getNombre() {
+	public String obtenerNombre() {
 		return nombre;
 	}
 
