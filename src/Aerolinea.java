@@ -123,8 +123,7 @@ public class Aerolinea implements IAerolinea {
         double totalVuelo = precio * cantidadDeJets;
         double impuesto = totalVuelo * impuestoAVueloPrivado;
         totalVuelo = totalVuelo + impuesto;
-        double recaudado = this.recaudadoPorDestino.get(destino) != null ? this.recaudadoPorDestino.get(destino)
-                : 0;
+        double recaudado = totalRecaudado(destino);
         recaudado = recaudado + totalVuelo;
         this.recaudadoPorDestino.put(destino, recaudado);
     }
@@ -169,8 +168,7 @@ public class Aerolinea implements IAerolinea {
     private void incrementarRecaudadoPublico(VueloPublico vuelo, int nroAsiento) {
         String seccion = vuelo.getAsientosDisponibles().get(nroAsiento);
         String destino = vuelo.getDestino();
-        double recaudado = this.recaudadoPorDestino.get(destino) != null ? this.recaudadoPorDestino.get(destino)
-                : 0;
+        double recaudado = totalRecaudado(destino);
         double esteVuelo = 0;
         int cantidadRefrigerio = vuelo.getCantRefrigerios();
         double valorRefrigerio = vuelo.getValorRefrigerio();
@@ -290,10 +288,7 @@ public class Aerolinea implements IAerolinea {
 
    @Override
     public double totalRecaudado(String destino) {
-        if (!this.recaudadoPorDestino.containsKey(destino)) {
-            return 0;
-        }
-        return this.recaudadoPorDestino.get(destino);
+        return this.recaudadoPorDestino.get(destino) != null ? this.recaudadoPorDestino.get(destino) : 0;
     }
 
    @Override
