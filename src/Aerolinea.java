@@ -279,13 +279,6 @@ public class Aerolinea implements IAerolinea {
         return "CANCELADO";
     }
 
-    private List<Vuelo> vuelosPorOrigen(List<Vuelo> lista, String origen) {
-        return lista.stream()
-                .filter(vuelo -> {
-                    return vuelo.getAeropuertoSalida().getNombre().equals(origen);
-                }).toList();
-    }
-
    @Override
     public double totalRecaudado(String destino) {
         return this.recaudadoPorDestino.get(destino) != null ? this.recaudadoPorDestino.get(destino) : 0;
