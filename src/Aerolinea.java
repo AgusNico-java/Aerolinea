@@ -26,7 +26,7 @@ public class Aerolinea implements IAerolinea {
     @Override
 	public void registrarCliente(int dni, String nombre, String telefono) {
 		// Verificar si ya existe un cliente con el mismo DNI
-        if (clientes.containsKey(dni)) {
+        if (clienteExistente(dni)) {
             throw new RuntimeException("El cliente con DNI " + dni + " ya está registrado.");
         }
 		// Crear un nuevo cliente y agregarlo a la lista
@@ -34,7 +34,7 @@ public class Aerolinea implements IAerolinea {
 		clientes.put(dni, nuevoCliente);
 	}
 
-	@Override
+    @Override
 	public void registrarAeropuerto(String nombre, String pais, String provincia, String direccion) {
         if (aeropuertoExistente(nombre)) {
             throw new RuntimeException("El aeropuerto " + nombre + " ya está registrado.");
@@ -144,7 +144,7 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public int venderPasaje(int dni, String codVuelo, int nroAsiento, boolean aOcupar) {
-        if (!clientes.containsKey(dni)) {
+        if (!clienteExistente(dni)) {
             throw new RuntimeException("El cliente debe estar registrado para comprar un pasaje");
         }
         if (!vuelos.containsKey(codVuelo)) {
@@ -383,6 +383,10 @@ public class Aerolinea implements IAerolinea {
     //Validaciones
     private boolean aeropuertoExistente(String codAeropuerto) {
         return this.aeropuertos.containsKey(codAeropuerto);
+    }
+
+    private boolean clienteExistente(int dni) {
+        return this.clientes.containsKey(dni);
     }
 
 
