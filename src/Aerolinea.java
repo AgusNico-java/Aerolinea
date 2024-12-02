@@ -286,7 +286,6 @@ public class Aerolinea implements IAerolinea {
                 }).toList();
     }
 
-	// FALTA IMPLEMENTAR REGISTRO DE VUELO
    @Override
     public double totalRecaudado(String destino) {
         if (!this.recaudadoPorDestino.containsKey(destino)) {
