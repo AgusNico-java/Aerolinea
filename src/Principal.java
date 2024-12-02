@@ -39,13 +39,13 @@ public class Principal {
         // Registrar un vuelo nacional
         double[] preciosNacional = {5000.0, 10000.0};
         int[] cantAsientosNacional = {150, 20};
-        String codVueloNacional = aerolinea.registrarVueloPublicoNacional("Aeroparque", "Bariloche", "15/11/2024", 8, 5000, preciosNacional, cantAsientosNacional);
+        String codVueloNacional = aerolinea.registrarVueloPublicoNacional("Aeroparque", "Bariloche", "15/12/2024", 8, 5000, preciosNacional, cantAsientosNacional);
 
         // Registrar un vuelo internacional con escalas
         double[] preciosInternacional = {20000.0, 40000.0, 60000.0};
         int[] cantAsientosInternacional = {200, 50, 10};
         String[] escalas = {"Guarulhos", "JFK"};
-        String codVueloInternacional = aerolinea.registrarVueloPublicoInternacional("Ezeiza", "Charles de Gaulle", "20/11/2024", 12, 6000, 3, preciosInternacional, cantAsientosInternacional, escalas);
+        String codVueloInternacional = aerolinea.registrarVueloPublicoInternacional("Ezeiza", "Charles de Gaulle", "20/12/2024", 12, 6000, 3, preciosInternacional, cantAsientosInternacional, escalas);
 
         // Vender pasajes
         int codPasaje1 = aerolinea.venderPasaje(12345678, codVueloNacional, 5, true);
@@ -74,7 +74,7 @@ public class Principal {
         System.out.println("Pasaje 1 cancelado. Asientos disponibles tras la cancelación: " + aerolinea.asientosDisponibles(codVueloNacional));
 
         // Consultar vuelos similares
-        List<String> vuelosSimilares = aerolinea.consultarVuelosSimilares("Aeroparque", "Bariloche", "15/11/2024");
+        List<String> vuelosSimilares = aerolinea.consultarVuelosSimilares("Aeroparque", "Bariloche", "15/12/2024");
         System.out.println("Vuelos similares al 15/11/2024 de Aeroparque a Bariloche: " + vuelosSimilares);
 
         
@@ -92,7 +92,7 @@ public class Principal {
         }
 
         // El cliente compra un vuelo privado de Aeroparque a Bariloche para 40 personas
-        String fechaVueloPrivado = "10/11/2024";
+        String fechaVueloPrivado = "10/12/2025";
         double precioVueloPrivado = 500000.0;
 
         // Vender el vuelo privado
