@@ -2,10 +2,7 @@ package TADs;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -48,7 +45,7 @@ public abstract class Vuelo {
 				'}';
 	}
 
-	public String getDestino() {
+	public String obtenerDestino() {
 		return destino;
 	}
 
@@ -56,7 +53,7 @@ public abstract class Vuelo {
 		return totalTripulantes;
 	}
 
-	public double[] getPrecios() {
+	public double[] obtenerPrecios() {
 		return precios;
 	}
 

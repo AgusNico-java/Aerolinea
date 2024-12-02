@@ -3,8 +3,6 @@ import TADs.*;
 import java.util.*;
 
 public class Aerolinea implements IAerolinea {
-    private final double impuestoAVueloPublico = 0.2;
-    private final double impuestoAVueloPrivado = 0.3;
     private String name;
     private Map<String, Vuelo> vuelos;
     private Map<Integer, Cliente> clientes;
@@ -110,21 +108,16 @@ public class Aerolinea implements IAerolinea {
         int totalPasajeros = listaDeAcompaniantes.size() + 1;
         Cliente[] arregloDeAcompaniantes = listaDeAcompaniantes.toArray(new Cliente[0]);
         String codVuelo = crearCodigoPrivado();
-        Vuelo vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio, codVuelo);
+        VueloPrivado vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio, codVuelo);
 
-        incrementarRecaudadoPrivado(totalPasajeros, precio, destino);
+        incrementarRecaudadoPrivado(totalPasajeros, precio, destino, vuelo);
         vuelos.put(codVuelo, vuelo);
 
         return codVuelo;
     }
 
-    private void incrementarRecaudadoPrivado(double totalPasajeros, double precio, String destino) {
-        int cantidadDeJets = (int) Math.ceil(totalPasajeros / 15);
-        double totalVuelo = precio * cantidadDeJets;
-        double impuesto = totalVuelo * impuestoAVueloPrivado;
-        totalVuelo = totalVuelo + impuesto;
-        double recaudado = totalRecaudado(destino);
-        recaudado = recaudado + totalVuelo;
+    private void incrementarRecaudadoPrivado(double totalPasajeros, double precio, String destino, VueloPrivado vuelo) {
+        double recaudado = totalRecaudado(destino) + vuelo.calcularPrecio();
         this.recaudadoPorDestino.put(destino, recaudado);
     }
 
@@ -166,24 +159,10 @@ public class Aerolinea implements IAerolinea {
     }
 
     private void incrementarRecaudadoPublico(VueloPublico vuelo, int nroAsiento) {
-        String seccion = vuelo.getAsientosDisponibles().get(nroAsiento);
-        String destino = vuelo.getDestino();
+        String destino = vuelo.obtenerDestino();
         double recaudado = totalRecaudado(destino);
-        double esteVuelo = 0;
-        int cantidadRefrigerio = vuelo.getCantRefrigerios();
-        double valorRefrigerio = vuelo.getValorRefrigerio();
 
-        if (seccion.equals("Turista")){
-            esteVuelo = esteVuelo + vuelo.getPrecios()[0];
-        } else if (seccion.equals("Ejecutiva")) {
-            esteVuelo = esteVuelo + vuelo.getPrecios()[1];
-        } else if (seccion.equals("Primera clase")) {
-            esteVuelo = esteVuelo + vuelo.getPrecios()[2];
-        }
-        esteVuelo = esteVuelo + (valorRefrigerio * cantidadRefrigerio);
-        double impuesto = esteVuelo * impuestoAVueloPublico;
-        esteVuelo = esteVuelo + impuesto;
-        recaudado = recaudado + esteVuelo;
+        recaudado = recaudado + vuelo.calcularPrecio(nroAsiento);
 
         this.recaudadoPorDestino.put(destino, recaudado);
 

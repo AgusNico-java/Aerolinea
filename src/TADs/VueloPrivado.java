@@ -1,6 +1,8 @@
 package TADs;
 
 public class VueloPrivado extends Vuelo {
+    private final double PORCENTAJE_IMPUESTOS = 0.3;
+
     private double precioJet;
     private double capacidadMaximaJet;
     private Cliente comprador;
@@ -12,6 +14,14 @@ public class VueloPrivado extends Vuelo {
         this.precioJet = precioJet;
         this.comprador = comprador;
         this.acompaniantes = acompaniantes;
+    }
+
+    public double calcularPrecio() {
+        double cantidadPasajeros = acompaniantes.length + 1;
+        int cantidadDeJets = (int) Math.ceil(cantidadPasajeros / 15);
+        double precio = precioJet * cantidadDeJets;
+        double totalImpuestos = precio * PORCENTAJE_IMPUESTOS;
+        return precio + totalImpuestos;
     }
 
     @Override

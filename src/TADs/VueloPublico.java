@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class VueloPublico extends Vuelo {
+    private static final double PORCENTAJE_IMPUESTO = 0.2;
     int cantidadPasajeros;
     double valorRefrigerio;
     int cantRefrigerios;
@@ -108,6 +109,23 @@ public abstract class VueloPublico extends Vuelo {
 
     private boolean perteneceSeccion(int asiento, String seccion) {
         return this.asientosDisponibles.get(asiento).equals(seccion);
+    }
+
+    public double calcularPrecio(int nroAsiento) {
+        String seccion = this.asientosDisponibles.get(nroAsiento);
+        double precio = 0;
+
+        if (seccion.equals("Turista")){
+            precio = precio + this.obtenerPrecios()[0];
+        } else if (seccion.equals("Ejecutiva")) {
+            precio = precio + this.obtenerPrecios()[1];
+        } else {
+            precio = precio + this.obtenerPrecios()[2];
+        }
+
+        precio = precio + (valorRefrigerio * cantRefrigerios);
+        double totalImpuestos = precio * PORCENTAJE_IMPUESTO;
+        return precio + totalImpuestos;
     }
 
     @Override
