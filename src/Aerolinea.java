@@ -36,7 +36,7 @@ public class Aerolinea implements IAerolinea {
 
 	@Override
 	public void registrarAeropuerto(String nombre, String pais, String provincia, String direccion) {
-        if (aeropuertos.containsKey(nombre)) {
+        if (aeropuertoExistente(nombre)) {
             throw new RuntimeException("El aeropuerto " + nombre + " ya está registrado.");
         }
         aeropuertos.put(nombre, new Aeropuerto(nombre, pais, provincia, direccion));
@@ -49,7 +49,7 @@ public class Aerolinea implements IAerolinea {
         Aeropuerto aeropuertoSalida = aeropuertos.get(origen);
         Aeropuerto aeropuertoDestino = aeropuertos.get(destino);
 
-        if (!aeropuertos.containsKey(destino)) {
+        if (!aeropuertoExistente(destino)) {
             throw new RuntimeException("El destino " + destino + " no está registrado.");
         }
         String codVuelo = crearCodigoPublico();
@@ -67,9 +67,8 @@ public class Aerolinea implements IAerolinea {
     @Override
     public String registrarVueloPublicoInternacional(String origen, String destino, String fecha, int tripulantes, double valorRefrigerio, int cantRefrigerios, double[] precios, int[] cantAsientos, String[] escalas) {
 
-        if (!aeropuertos.containsKey(destino)) {
+        if (!aeropuertoExistente(destino)) {
             throw new RuntimeException("El destino " + destino + " no está registrado.");
-
         }
 
         String codVuelo = crearCodigoPublico();
@@ -86,27 +85,30 @@ public class Aerolinea implements IAerolinea {
 
     @Override
     public String VenderVueloPrivado(String origen, String destino, String fecha, int tripulantes, double precio, int dniComprador, int[] acompaniantes) {
-        if (!aeropuertos.containsKey(destino)) {
+        if (!aeropuertoExistente(destino)) {
             throw new RuntimeException("El destino " + destino + " no está registrado.");
         }
-        if (!aeropuertos.containsKey(origen)) {
+        if (!aeropuertoExistente(origen)) {
             throw new RuntimeException("El origen " + origen + " no está registrado.");
         }
         if (!fechaValida(fecha)) {
             throw new RuntimeException("La fecha debe ser posterior a la fecha actual.");
         }
+
         Cliente comprador = clientes.get(dniComprador);
         ArrayList<Cliente> listaDeAcompaniantes = new ArrayList<>();
         Aeropuerto aeropuertoSalida = aeropuertos.get(origen);
         Aeropuerto aeropuertoDestino = aeropuertos.get(destino);
 
-
-        for (int dni : acompaniantes) {
+        List<Integer> listaDniAcompaniantes = Arrays.asList(Arrays.stream(acompaniantes).boxed().toArray(Integer[]::new));
+        Iterator<Integer> iterator = listaDniAcompaniantes.iterator();
+        while (iterator.hasNext()) {
+            int dni = iterator.next();
             listaDeAcompaniantes.add(clientes.get(dni));
         }
-        int totalPasajeros = listaDeAcompaniantes.size() + 1;
 
-        Cliente[] arregloDeAcompaniantes = listaDeAcompaniantes.toArray(new Cliente[listaDeAcompaniantes.size()]);
+        int totalPasajeros = listaDeAcompaniantes.size() + 1;
+        Cliente[] arregloDeAcompaniantes = listaDeAcompaniantes.toArray(new Cliente[0]);
         String codVuelo = crearCodigoPrivado();
         Vuelo vuelo = new VueloPrivado(destino, tripulantes, null, aeropuertoSalida, aeropuertoDestino, fecha, comprador, arregloDeAcompaniantes, precio, codVuelo);
 
@@ -376,6 +378,11 @@ public class Aerolinea implements IAerolinea {
         }).count();
 
         return cantidadDeVuelosPublicos + "-PRI";
+    }
+
+    //Validaciones
+    private boolean aeropuertoExistente(String codAeropuerto) {
+        return this.aeropuertos.containsKey(codAeropuerto);
     }
 
 
